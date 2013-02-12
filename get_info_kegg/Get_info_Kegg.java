@@ -46,12 +46,6 @@ public class Get_info_Kegg {
             {
                     
                     Get_info_Kegg testK = new Get_info_Kegg();
-                    String[] splits_hrf = inputLine.split(name + ":");
-                    String[] splits_hrf_small = splits_hrf[1].split("\">");
-                    String latter_half_of_url = splits_hrf_small[0];
-                    System.out.println(latter_half_of_url);
-                    URL keg_url_bget = null;
-                    keg_url_bget = new URL("http://www.genome.jp/");
                     ArrayList<String> url_list = new ArrayList<>();
                     String newLine = System.getProperty("line.separator"); 
                     String[] buffer_split = inputLine.split(name);
@@ -61,10 +55,16 @@ public class Get_info_Kegg {
                         String[] gene_id_info = i.split("\">");
                         gene_id_info = gene_id_info[0].split(":");
                         //System.out.println(buffer_split_new[1] + "first" + i + "last" );
-                        if(!gene_id_info[1].contains(";")){
-                            String usrl_string =  gene_id_info[1];                      
-                            url_list.add(usrl_string);
-                            
+                        try{
+                            if(!gene_id_info[1].contains(";")){
+                                String usrl_string =  gene_id_info[1];                      
+                                url_list.add(usrl_string);
+                                System.out.println(usrl_string);
+
+                            }
+                        }
+                        catch (Exception e){//Catch exception if any
+                            System.err.println("Custom Error: " + e.getMessage());
                         }
                         
                     }
@@ -119,27 +119,43 @@ public class Get_info_Kegg {
  
     public void build_data_from_url(ArrayList<String> sequence_info, String name, String id) throws MalformedURLException, IOException{
         Get_info_Kegg K = new Get_info_Kegg();
+        
         for(String s :sequence_info){
 
             if (s.contains("aaseq")){
                 String aaSequence = s.toString();
-                URL aa = new URL(aaSequence);
-                BufferedReader aa_buffer = new BufferedReader(new InputStreamReader(aa.openStream()));
-                K.keg_test(aa_buffer,"AA");  
+                try{
+                    URL aa = new URL(aaSequence);
+                   BufferedReader aa_buffer = new BufferedReader(new InputStreamReader(aa.openStream()));
+                    K.keg_test(aa_buffer,"AA"); 
+                }
+                catch (Exception e){//Catch exception if any
+                    System.err.println("Custom Error: " + e.getMessage());
+                }
 
             }
             if (s.contains("ntseq")){
                 String aaSequence = s.toString();
-                URL nt = new URL(aaSequence);
-                BufferedReader nt_buffer  = new BufferedReader(new InputStreamReader(nt.openStream()));
-                K.keg_test(nt_buffer,"NT");
+                try{
+                    URL nt = new URL(aaSequence);
+                    BufferedReader nt_buffer  = new BufferedReader(new InputStreamReader(nt.openStream()));
+                    K.keg_test(nt_buffer,"NT");
+                }
+                catch (Exception e){//Catch exception if any
+                    System.err.println("Custom Error: " + e.getMessage());
+                }
 
             }            
             if (s.contains("UniProt")){
                 String aaSequence = s.toString();
-                URL up = new URL(aaSequence);
-                BufferedReader up_buffer  = new BufferedReader(new InputStreamReader(up.openStream()));
-                K.keg_test(up_buffer,"UniProt");
+                try{
+                    URL up = new URL(aaSequence);
+                    BufferedReader up_buffer  = new BufferedReader(new InputStreamReader(up.openStream()));
+                    K.keg_test(up_buffer,"UniProt");
+                }
+                catch (Exception e){//Catch exception if any
+                    System.err.println("Custom Error: " + e.getMessage());
+                }
 
                 
             } 
@@ -153,7 +169,7 @@ public class Get_info_Kegg {
     public void keg_test(BufferedReader buffer_name, String file_type) throws IOException{
             
             String newLine = System.getProperty("line.separator"); 
-            File log = new File("/home/dialloa/"+file_type+"_result.txt");
+            File log = new File("C:\\Users\\Alos\\Desktop\\"+file_type+"_result.txt");
             String inputLine;
             if(log.exists()==false){
                 System.out.println("We had to make a new file.");
@@ -161,7 +177,7 @@ public class Get_info_Kegg {
             }
             while ((inputLine = buffer_name.readLine()) != null) {
                 PrintWriter out = new PrintWriter(new FileWriter(log, true));
-                  System.out.println(inputLine);
+                //  System.out.println(inputLine);
                   out.append(inputLine);
                   out.append(newLine);       
                   out.close();
@@ -175,7 +191,7 @@ public class Get_info_Kegg {
            
         // Open the file that is the first 
         // command line parameter
-        FileInputStream fstream = new FileInputStream("/home/dialloa/orgVSecforalos.txt");
+        FileInputStream fstream = new FileInputStream("C:\\Users\\Alos\\Desktop\\test.txt");
         // Get the object of DataInputStream
         DataInputStream in = new DataInputStream(fstream);
         BufferedReader br = new BufferedReader(new InputStreamReader(in));
