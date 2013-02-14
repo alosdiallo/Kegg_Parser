@@ -11,7 +11,7 @@ This program takes in ec numbers and species names in the form:
 HSA 1.1.1.25  1.1.1.30
 
 where the first value is the speacies name followed by ec numbers.  The program takes those ec numbers and builds 
-the proper url's from them example:
+the proper url's from them  here is an example:
 Convert kegid to uniprot
 http://rest.kegg.jp/conv/UniProt/hsa:259230
 
